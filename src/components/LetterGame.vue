@@ -37,7 +37,7 @@
       >
         <img
           :class="{ rotating: rotateImage }"
-          src="https://mikroten.github.io/roman-pismenka/yeah.pngassets/yeah.png"
+          src="https://mikroten.github.io/roman-pismenka/yeah.png"
           class="w-[150px] h-[150px] rounded-full mb-3"
           alt=""
         />
