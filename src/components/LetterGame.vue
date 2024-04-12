@@ -19,7 +19,7 @@
           <span
             v-for="(char, idx) in row.modified"
             :key="idx"
-            class="character"
+            class="character inline-block p-1 m-0.5 cursor-pointer"
             :class="getClass(row, idx)"
             @click="selectChar(row, idx)"
           >
