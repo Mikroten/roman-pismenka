@@ -109,7 +109,7 @@ const checkGameEnd = () => {
         row.selected[idx] === "correct" || row.original.includes(char)
     )
   );
-  if (true) {
+  if (allCorrect) {
     gameEnded.value = true;
     audio.play();
     confetti({
