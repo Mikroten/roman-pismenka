@@ -28,13 +28,48 @@
         </td>
       </tr>
     </table>
+    <div
+      v-if="gameEnded"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center"
+    >
+      <div
+        class="bg-white p-4 rounded-lg shadow-lg flex flex-col justify-center text-center items-center w-[400px] h-[400px]"
+      >
+        <img
+          :class="{ rotating: rotateImage }"
+          src="/roman-pismenka/yeah.png"
+          class="w-[150px] h-[150px] rounded-full mb-3"
+          alt=""
+        />
+        <h2 class="text-xl font-bold">Hurá!</h2>
+        <p class="text-gray-700">Si veľmi šikovný!<br />Zaslužiš si oddych.</p>
+        <p>Ale kapurkovú by si ešte mohol:</p>
+        <div class="flex justify-center gap-3">
+          <button
+            @click="resetGame"
+            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+          >
+            No daj
+          </button>
+          <a
+            href="https://youtu.be/DmH_2yochqY?si=XofBmXsRwOwVfWAM&t=39"
+            class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+          >
+            Skadze paru naberem
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
+import confetti from "canvas-confetti";
 
 const rows = ref([]);
+const gameEnded = ref(false);
+const audio = new Audio("/roman-pismenka/yay.mp3");
 
 const generateCharacterString = (
   length,
@@ -67,10 +102,37 @@ const createRow = () => {
   return { original, modified, selected: new Array(15).fill(null) };
 };
 
+const checkGameEnd = () => {
+  const allCorrect = rows.value.every((row) =>
+    row.modified.every(
+      (char, idx) =>
+        row.selected[idx] === "correct" || row.original.includes(char)
+    )
+  );
+  if (allCorrect) {
+    gameEnded.value = true;
+    audio.play();
+    confetti({
+      particleCount: 300,
+      spread: 300,
+      origin: { y: 0.5 },
+    });
+  }
+};
+
+const resetGame = () => {
+  rows.value = [];
+  for (let i = 0; i < 28; i++) {
+    rows.value.push(createRow());
+  }
+  gameEnded.value = false;
+};
+
 const selectChar = (row, idx) => {
   const char = row.modified[idx];
   const isCorrect = !row.original.includes(char);
   row.selected[idx] = isCorrect ? "correct" : "incorrect"; // Update selection status
+  checkGameEnd();
 };
 
 const getClass = (row, idx) => {
