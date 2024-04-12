@@ -37,7 +37,7 @@
       >
         <img
           :class="{ rotating: rotateImage }"
-          src="/roman-pismenka/yeah.png"
+          src="https://mikroten.github.io/roman-pismenka/yeah.pngassets/yeah.png"
           class="w-[150px] h-[150px] rounded-full mb-3"
           alt=""
         />
@@ -109,7 +109,7 @@ const checkGameEnd = () => {
         row.selected[idx] === "correct" || row.original.includes(char)
     )
   );
-  if (allCorrect) {
+  if (true) {
     gameEnded.value = true;
     audio.play();
     confetti({
